@@ -26,7 +26,7 @@ class Point_2D
 		}
 };
 
-typedef typename vector<Point_2D>::iterator it;
+typedef vector<Point_2D>::iterator it;
 
 /* Object function for calculating distance */
 struct Point2D_distance 

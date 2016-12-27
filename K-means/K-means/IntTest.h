@@ -2,7 +2,7 @@
 #include <cmath>
 #include <vector>
 
-typedef typename vector<int>::iterator it;
+typedef vector<int>::iterator intIt;
 
 struct Int_distance
 {
@@ -16,7 +16,7 @@ struct Int_distance
 
 struct Int_average
 {
-	inline double operator()(it start, int groupId, int* currentGroupId, int elementCount)
+	inline double operator()(intIt start, int groupId, int* currentGroupId, int elementCount)
 	{
 		int newCentroid = 0;
 		int count = 0;
@@ -25,7 +25,7 @@ struct Int_average
 		{
 			if (currentGroupId[i] == groupId)
 			{
-				newCentroid += (start + i)->x;
+				newCentroid += *(start + i);
 				count++;
 			}
 		}
