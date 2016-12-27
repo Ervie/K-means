@@ -10,6 +10,8 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+	srand(time(NULL));
+
 	K_means<Point_2D> k_means;
 
 	Point_2D* result;
