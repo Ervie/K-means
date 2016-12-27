@@ -79,42 +79,68 @@ class K_means
 		Iterator* Group(it first, it last, DistancePredicate &distanceMeasure, AveragePredicate &averagingFunction, int maxIteration, int k, StopConditions stopCondition)
 		{
 			int elementCount = distance(first, last);
+			int iterationCounter = 0;
+			bool stopConditionFulfilled = false;
 			Init(elementCount, k);
 
 			if (first == last)
 				return returnValues;
 
-			/* Calculate distancesMatrix */
-
-			for (int i = 0; i < k; i++)
-			{
-				for (int j = 0; j < elementCount; j++)
+			do
 				{
-					distancesMatrix[i][j] = distanceMeasure(oldCentroids[i], *(first + j));
-				}
-			}
+				/* Calculate distancesMatrix */
 
-			/* Assign elements to this iteration group*/
-
-			for (int i = 0; i < elementCount; i++)
-			{
-				for (int j = 0; j < k; j++)
+				for (int i = 0; i < k; i++)
 				{
-					if (distancesMatrix[j][i] < groupMinimum)
+					for (int j = 0; j < elementCount; j++)
 					{
-						groupMinimum = distancesMatrix[j][i];
-						currentGroupId[i] = j;
+						distancesMatrix[i][j] = distanceMeasure(oldCentroids[i], *(first + j));
 					}
 				}
-				groupMinimum = DBL_MAX;
-			}
 
-			/* Calculate new centroids */
+				/* Assign elements to this iteration group*/
 
-			for (int i = 0; i < k; i++)
-			{
-				newCentroids[i] = averagingFunction(first, i, currentGroupId, elementCount);
+				for (int i = 0; i < elementCount; i++)
+				{
+					for (int j = 0; j < k; j++)
+					{
+						if (distancesMatrix[j][i] < groupMinimum)
+						{
+							groupMinimum = distancesMatrix[j][i];
+							currentGroupId[i] = j;
+						}
+					}
+					groupMinimum = DBL_MAX;
+				}
+
+				/* Calculate new centroids */
+
+				for (int i = 0; i < k; i++)
+				{
+					newCentroids[i] = averagingFunction(first, i, currentGroupId, elementCount);
+				}
+
+				iterationCounter++;
+
+				/* Check end condition ToDo: fix*/
+
+				if (stopCondition == MaxIterations)
+					stopConditionFulfilled = (iterationCounter >= maxIteration);
+				else
+				{
+					for (int i = 0; i < k; i++)
+					{
+						if (distanceMeasure(oldCentroids[i], newCentroids[i]) < 0.1)
+						{
+							stopConditionFulfilled = false;
+						}
+						oldCentroids[i] = newCentroids[i];
+					}
+				}
 			}
+			while(!stopConditionFulfilled);
+
+			/* ToDo: sort elements, return iterator positions*/
 
 			Finish(elementCount);
 			return returnValues;

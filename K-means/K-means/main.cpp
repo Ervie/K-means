@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	vec.push_back(Point_2D(-5, 5));
 	vec.push_back(Point_2D(-2, -3));
 
-	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 23, 3, MaxIterations);
+	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 3, StableState);
 	
 	cin.get();
 	return 0;
