@@ -3,18 +3,23 @@
 #include "StopConditions.h"
 
 #include "Point_2D.h"
-#include "IntTest.h"""
+#include "IntTest.h"
 
 #include <vector>
 #include <algorithm> 
 
 using namespace std;
 
+void IntegerScenario();
+void Point2DScenario();
+
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
 
-	IntegerScenario();
+	//IntegerScenario();
+
+	Point2DScenario();
 
 	cin.get();
 	return 0;
@@ -57,5 +62,5 @@ void Point2DScenario()
 	vec.push_back(Point_2D(-5, 5));
 	vec.push_back(Point_2D(-2, -3));
 
-	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_distance(), 4, 3, StableState);
+	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 3, StableState);
 }

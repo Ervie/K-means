@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cmath>
-#include <stdlib.h>     /* srand, rand */
+#include <stdlib.h>
 #include <time.h>     
 
 /* Class */

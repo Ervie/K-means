@@ -11,9 +11,9 @@ template <typename Iterator>
 class K_means
 {
 	private:
-		Iterator* oldCentroids;
-		Iterator* newCentroids;
+		Iterator* Centroids;
 		int* currentGroupId;
+		int* nextGroupId;
 		double** distancesMatrix;
 		Iterator* returnValues;
 
@@ -37,10 +37,10 @@ class K_means
 
 			groupMinimum = DBL_MAX;
 
-			oldCentroids = new Iterator[groupNumber];
-			newCentroids = new Iterator[groupNumber];
+			Centroids = new Iterator[groupNumber];
 			returnValues = new Iterator[groupNumber];
 			currentGroupId = new int[elementCount];
+			nextGroupId = new int[elementCount];
 
 			distancesMatrix = new double*[elementCount];
 
@@ -52,6 +52,7 @@ class K_means
 			for (int i = 0; i < elementCount; i++)
 			{
 				currentGroupId[i] = -1;
+				nextGroupId[i] = -1;
 			}
 
 			for (int i = 0; i < groupNumber; i++)
@@ -63,9 +64,9 @@ class K_means
 
 		void Finish(int elementCount)
 		{
-			delete oldCentroids;
-			delete newCentroids;
+			delete Centroids;
 			delete currentGroupId;
+			delete nextGroupId;
 
 			for (int i = 0; i < elementCount; i++)
 			{
@@ -94,7 +95,7 @@ class K_means
 				{
 					for (int j = 0; j < elementCount; j++)
 					{
-						distancesMatrix[i][j] = distanceMeasure(oldCentroids[i], *(first + j));
+						distancesMatrix[i][j] = distanceMeasure(Centroids[i], *(first + j));
 					}
 				}
 
@@ -107,7 +108,7 @@ class K_means
 						if (distancesMatrix[j][i] < groupMinimum)
 						{
 							groupMinimum = distancesMatrix[j][i];
-							currentGroupId[i] = j;
+							nextGroupId[i] = j;
 						}
 					}
 					groupMinimum = DBL_MAX;
@@ -117,26 +118,32 @@ class K_means
 
 				for (int i = 0; i < k; i++)
 				{
-					newCentroids[i] = averagingFunction(first, i, currentGroupId, elementCount);
+					Centroids[i] = averagingFunction(first, i, nextGroupId, elementCount);
 				}
 
 				iterationCounter++;
 
-				/* Check end condition ToDo: fix*/
+				/* Check end condition */
 
 				if (stopCondition == MaxIterations)
 					stopConditionFulfilled = (iterationCounter >= maxIteration);
 				else
 				{
-					for (int i = 0; i < k; i++)
+					stopConditionFulfilled = true;
+					for (int i = 0; i < elementCount; i++)
 					{
-						if (distanceMeasure(oldCentroids[i], newCentroids[i]) < 0.1)
+						if (nextGroupId[i] != currentGroupId[i])
 						{
 							stopConditionFulfilled = false;
+							break;
 						}
-						oldCentroids[i] = newCentroids[i];
 					}
 				}
+
+				/* Copy new cluster id values to old array */
+
+				for (int i = 0; i < elementCount; i++)
+					currentGroupId[i] = nextGroupId[i];
 			}
 			while(!stopConditionFulfilled);
 
