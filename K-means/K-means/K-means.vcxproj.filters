@@ -26,5 +26,11 @@
     <ClInclude Include="K_means.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StopConditions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Point_2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
