@@ -17,6 +17,8 @@ class K_means
 		double** distancesMatrix;
 		Iterator* returnValues;
 
+		double groupMinimum;
+
 	public:
 		typedef typename vector<Iterator>::iterator it;
 		/* Template functions disallow declaration in cpp file */
@@ -33,6 +35,8 @@ class K_means
 			if (elementCount < 1)
 				throw std::logic_error("Liczba elementów jest mniejsza ni¿ 1");
 
+			groupMinimum = DBL_MAX;
+
 			oldCentroids = new Iterator[groupNumber];
 			newCentroids = new Iterator[groupNumber];
 			returnValues = new Iterator[groupNumber];
@@ -47,7 +51,7 @@ class K_means
 
 			for (int i = 0; i < elementCount; i++)
 			{
-				currentGroupId[i] = 0;
+				currentGroupId[i] = -1;
 			}
 
 			for (int i = 0; i < groupNumber; i++)
@@ -71,15 +75,48 @@ class K_means
 			delete [] distancesMatrix;
 		}
 
-		template <typename DistancePredicate>
-		Iterator* Group(it first, it last, DistancePredicate &distanceMeasure, bool averagingFunction, int maxIteration, int k, StopConditions stopCondition)
+		template <typename DistancePredicate, typename AveragePredicate>
+		Iterator* Group(it first, it last, DistancePredicate &distanceMeasure, AveragePredicate &averagingFunction, int maxIteration, int k, StopConditions stopCondition)
 		{
-			Init(distance(first, last), k);
+			int elementCount = distance(first, last);
+			Init(elementCount, k);
 
 			if (first == last)
-				return nullptr;
+				return returnValues;
 
-			Finish(distance(first, last));
+			/* Calculate distancesMatrix */
+
+			for (int i = 0; i < k; i++)
+			{
+				for (int j = 0; j < elementCount; j++)
+				{
+					distancesMatrix[i][j] = distanceMeasure(oldCentroids[i], *(first + j));
+				}
+			}
+
+			/* Assign elements to this iteration group*/
+
+			for (int i = 0; i < elementCount; i++)
+			{
+				for (int j = 0; j < k; j++)
+				{
+					if (distancesMatrix[j][i] < groupMinimum)
+					{
+						groupMinimum = distancesMatrix[j][i];
+						currentGroupId[i] = j;
+					}
+				}
+				groupMinimum = DBL_MAX;
+			}
+
+			/* Calculate new centroids */
+
+			for (int i = 0; i < k; i++)
+			{
+				newCentroids[i] = averagingFunction(first, i, currentGroupId, elementCount);
+			}
+
+			Finish(elementCount);
 			return returnValues;
 
 		}

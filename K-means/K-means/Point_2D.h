@@ -26,6 +26,8 @@ class Point_2D
 		}
 };
 
+typedef typename vector<Point_2D>::iterator it;
+
 /* Object function for calculating distance */
 struct Point2D_distance 
 {
@@ -36,16 +38,39 @@ struct Point2D_distance
 };
 
 /* Averaging function */
+//Point_2D Point2D_average(Point_2D data[])
+//{
+//	Point_2D result(0,0);
+//	int count;
+//
+//	for (int i = 0; i < sizeof(data)/sizeof(data[0]) ; i++)
+//	{
+//		
+//	}
+//
+//	return result;
+//}
 
-Point_2D Point2D_average(Point_2D data[])
+struct Point2D_average
 {
-	Point_2D result(0,0);
-	int count;
-
-	for (int i = 0; i < sizeof(data)/sizeof(data[0]) ; i++)
+	inline Point_2D operator()(it start, int groupId, int* currentGroupId, int elementCount)
 	{
-		
-	}
+		Point_2D newCentroid = Point_2D(0.0, 0.0);
+		int count = 0;
 
-	return result;
-}
+		for (int i = 0; i < elementCount; i++)
+		{
+			if (currentGroupId[i] == groupId)
+			{
+				newCentroid.x += (start + i)->x;
+				newCentroid.y += (start + i)->y;
+				count++;
+			}
+		}
+
+		newCentroid.x /= count;
+		newCentroid.y /= count;
+
+		return newCentroid;
+	}
+};
