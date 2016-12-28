@@ -4,6 +4,7 @@
 
 #include "Point_2D.h"
 #include "IntTest.h"
+#include "bitmap_image.hpp"
 
 #include <vector>
 #include <algorithm> 
@@ -12,6 +13,7 @@ using namespace std;
 
 void IntegerScenario();
 void Point2DScenario();
+void BitmapScenario(int k, string inputFileName, string outputFileName);
 
 int main(int argc, char** argv)
 {
@@ -19,7 +21,12 @@ int main(int argc, char** argv)
 
 	IntegerScenario();
 	Point2DScenario();
+	BitmapScenario(2, "input01.bmp", "outputK2.bmp");
+	BitmapScenario(3, "input01.bmp", "outputK3.bmp");
+	BitmapScenario(5, "input01.bmp", "outputK5.bmp");
+	BitmapScenario(5, "input01.bmp", "outputK5_1.bmp");
 
+	cout << "Zakoñczono przetwarzanie" << endl;
 	cin.get();
 	return 0;
 }
@@ -70,4 +77,50 @@ void Point2DScenario()
 	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 6, StableState);
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
+}
+
+void BitmapScenario(int k, string inputFileName, string outputFileName)
+{
+	bitmap_image image(inputFileName);
+	rgb_t colour;
+
+	K_means<Point_2D> k_means;
+
+	vector<Point_2D>::iterator* result;
+
+	vector<Point_2D> vec = vector<Point_2D>();
+
+	if (!image)
+	{
+		cout << "Nie uda³o siê otworzyæ pliku: " << inputFileName.c_str() << endl;
+		return;
+	}
+
+	// read only non-white (#FFFFFF) pixels
+	for  (unsigned int i = 0; i < image.width(); i++)
+	{
+		for (unsigned int j = 0; j < image.height(); j++)
+		{
+			image.get_pixel(i, j, colour);
+
+			if (colour.blue < 255 && colour.red < 255 && colour.green < 255)
+				vec.push_back(Point_2D(i, j));
+
+		}
+	}
+
+	// computing
+	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, k, StableState);
+
+	// coloring
+	for (int i = 0; i < k; i++)
+	{
+		for (std::vector<Point_2D>::iterator it = result[i]; it != vec.end(); it++)
+		{
+			image.set_pixel((int)it->x, (int)it->y, palette_colormap[(6*i) % 50]);
+		}
+	}
+	image.save_image(outputFileName);
+
+	cout << "Zapisano obraz " << outputFileName << endl;
 }
