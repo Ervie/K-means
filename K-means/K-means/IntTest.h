@@ -16,7 +16,7 @@ struct Int_distance
 
 struct Int_average
 {
-	inline int operator()(intIt start, int groupId, int* currentGroupId, int elementCount)
+	inline int operator()(intIt start, int groupId, int* currentGroupId, int elementCount, int oldCentroid)
 	{
 		int newCentroid = 0;
 		int count = 0;
@@ -30,7 +30,10 @@ struct Int_average
 			}
 		}
 
-		newCentroid = (int)(newCentroid / count);
+		if (count != 0)
+			newCentroid = (int)(newCentroid / count);
+		else
+			newCentroid = oldCentroid;
 
 		return newCentroid;
 	}

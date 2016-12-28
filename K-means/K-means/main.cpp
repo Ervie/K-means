@@ -18,7 +18,6 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 
 	//IntegerScenario();
-
 	Point2DScenario();
 
 	cin.get();
@@ -42,7 +41,11 @@ void IntegerScenario()
 	vec.push_back(-9);
 	vec.push_back(9);
 
+	k_means.DisplayCollection(vec.begin(), vec.end());
+
 	result = k_means.Group(vec.begin(), vec.end(), Int_distance(), Int_average(), 3, 2, MaxIterations);
+
+	k_means.DisplayCollection(vec.begin(), vec.end());
 }
 
 void Point2DScenario()
@@ -62,5 +65,9 @@ void Point2DScenario()
 	vec.push_back(Point_2D(-5, 5));
 	vec.push_back(Point_2D(-2, -3));
 
+	k_means.DisplayCollection(vec.begin(), vec.end());
+
 	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 3, StableState);
+
+	k_means.DisplayCollection(vec.begin(), vec.end());
 }

@@ -62,18 +62,28 @@ class K_means
 			}
 		}
 
-		void Finish(int elementCount)
+		void Finish(int groupNumber)
 		{
 			delete Centroids;
 			delete currentGroupId;
 			delete nextGroupId;
 
-			for (int i = 0; i < elementCount; i++)
+			for (int i = 0; i < groupNumber; i++)
 			{
 				delete distancesMatrix[i];
 			}
 
 			delete [] distancesMatrix;
+		}
+
+		void DisplayCollection(it first, it last)
+		{
+			int elementCount = distance(first, last);
+
+			for (int i = 0; i < elementCount; i++)
+			{
+				cout <<  "[" << i << "]: " <<*(first + i) << endl;
+			}
 		}
 
 		template <typename DistancePredicate, typename AveragePredicate>
@@ -118,7 +128,7 @@ class K_means
 
 				for (int i = 0; i < k; i++)
 				{
-					Centroids[i] = averagingFunction(first, i, nextGroupId, elementCount);
+					Centroids[i] = averagingFunction(first, i, nextGroupId, elementCount, Centroids[i]);
 				}
 
 				iterationCounter++;
@@ -149,7 +159,7 @@ class K_means
 
 			/* ToDo: sort elements, return iterator positions*/
 
-			Finish(elementCount);
+			Finish(k);
 			return returnValues;
 
 		}

@@ -26,6 +26,11 @@ class Point_2D
 		}
 };
 
+std::ostream & operator<<(std::ostream & Str, const Point_2D& p)
+{
+	return Str << "(" << p.x << "," << p.y << ")";
+}
+
 typedef vector<Point_2D>::iterator it;
 
 /* Object function for calculating distance */
@@ -53,7 +58,7 @@ struct Point2D_distance
 
 struct Point2D_average
 {
-	inline Point_2D operator()(it start, int groupId, int* currentGroupId, int elementCount)
+	inline Point_2D operator()(it start, int groupId, int* currentGroupId, int elementCount, Point_2D oldCentroid)
 	{
 		Point_2D newCentroid = Point_2D(0.0, 0.0);
 		int count = 0;
@@ -68,8 +73,16 @@ struct Point2D_average
 			}
 		}
 
-		newCentroid.x /= count;
-		newCentroid.y /= count;
+		if (count != 0)
+		{
+			newCentroid.x /= count;
+			newCentroid.y /= count;
+		}
+		else
+		{
+			newCentroid.x = oldCentroid.x;
+			newCentroid.y = oldCentroid.y;
+		}
 
 		return newCentroid;
 	}
