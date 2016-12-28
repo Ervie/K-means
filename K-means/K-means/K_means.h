@@ -33,10 +33,16 @@ class K_means
 			
 		}
 
-		void Init(int elementCount, int groupNumber)
+		void Initialize(int elementCount, int groupNumber)
 		{
+			if (groupNumber < 1)
+				throw std::logic_error("Liczba grup jest mniejsza ni¿ 1");
+
 			if (elementCount < 1)
 				throw std::logic_error("Liczba elementów jest mniejsza ni¿ 1");
+
+			if (elementCount < groupNumber)
+				throw std::logic_error("Liczba elementów jest mniejsza ni¿ liczba grup");
 
 			groupMinimum = DBL_MAX;
 			groupStartIndex = 0;
@@ -66,6 +72,26 @@ class K_means
 			}
 		}
 
+		void AssignStartingPoints(int groupNumber, int elementCount, it first)
+		{
+			/*Iterator generatedValue;
+
+			Centroids[0] = *(first + (rand() % elementCount));
+
+			for (int i = 1; i < groupNumber; i++)
+			{
+				while (find(begin(Centroids), end(Centroids), generatedValue) != end(Centroids))
+					generatedValue = *(first + (rand() % elementCount));
+
+				Centroids[i] = generatedValue;
+			}*/
+
+			for (int i = 0; i < groupNumber; i++)
+			{
+				Centroids[i] = *(first + (rand() % elementCount));
+			}
+		}
+
 		void Finish(int groupNumber)
 		{
 			delete Centroids;
@@ -88,6 +114,7 @@ class K_means
 			{
 				cout <<  "[" << i << "]: " <<*(first + i) << endl;
 			}
+			cout << endl;
 		}
 
 		template <typename DistancePredicate, typename AveragePredicate>
@@ -96,7 +123,10 @@ class K_means
 			int elementCount = distance(first, last);
 			int iterationCounter = 0;
 			bool stopConditionFulfilled = false;
-			Init(elementCount, k);
+
+			Initialize(elementCount, k);
+
+			AssignStartingPoints(k, elementCount, first);
 
 			if (first == last)
 				return returnValues;
