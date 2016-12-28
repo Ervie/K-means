@@ -28,7 +28,7 @@ void IntegerScenario()
 {
 	K_means<int> k_means;
 
-	int* result;
+	vector<int>::iterator* result;
 
 	vector<int> vec = vector<int>();
 
@@ -52,7 +52,7 @@ void Point2DScenario()
 {
 	K_means<Point_2D> k_means;
 
-	Point_2D* result;
+	vector<Point_2D>::iterator* result;
 
 	vector<Point_2D> vec = vector<Point_2D>();
 
@@ -67,7 +67,7 @@ void Point2DScenario()
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 
-	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 3, StableState);
+	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 4, StableState);
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 }

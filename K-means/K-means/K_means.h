@@ -10,17 +10,20 @@ using namespace std;
 template <typename Iterator> 
 class K_means
 {
+	public:
+		typedef typename vector<Iterator>::iterator it;
+
 	private:
 		Iterator* Centroids;
 		int* currentGroupId;
 		int* nextGroupId;
 		double** distancesMatrix;
-		Iterator* returnValues;
+		it* returnValues;
 
 		double groupMinimum;
+		int groupStartIndex;
 
 	public:
-		typedef typename vector<Iterator>::iterator it;
 		/* Template functions disallow declaration in cpp file */
 
 		
@@ -36,9 +39,10 @@ class K_means
 				throw std::logic_error("Liczba elementów jest mniejsza ni¿ 1");
 
 			groupMinimum = DBL_MAX;
+			groupStartIndex = 0;
 
 			Centroids = new Iterator[groupNumber];
-			returnValues = new Iterator[groupNumber];
+			returnValues = new it[groupNumber];
 			currentGroupId = new int[elementCount];
 			nextGroupId = new int[elementCount];
 
@@ -87,7 +91,7 @@ class K_means
 		}
 
 		template <typename DistancePredicate, typename AveragePredicate>
-		Iterator* Group(it first, it last, DistancePredicate &distanceMeasure, AveragePredicate &averagingFunction, int maxIteration, int k, StopConditions stopCondition)
+		it* Group(it first, it last, DistancePredicate &distanceMeasure, AveragePredicate &averagingFunction, int maxIteration, int k, StopConditions stopCondition)
 		{
 			int elementCount = distance(first, last);
 			int iterationCounter = 0;
@@ -157,7 +161,24 @@ class K_means
 			}
 			while(!stopConditionFulfilled);
 
-			/* ToDo: sort elements, return iterator positions*/
+			/* Sort elements, calculate iterator positions*/
+
+
+			for (int i = 0; i < k; i++)
+			{
+				returnValues[i] = first + groupStartIndex;
+
+				for (int j = groupStartIndex; j < elementCount; j++)
+				{
+					if (currentGroupId[j] == i)
+					{
+						swap(currentGroupId[j], currentGroupId[groupStartIndex]);
+						iter_swap(first + j, first + groupStartIndex);
+						groupStartIndex++;
+					}
+				}
+
+			}
 
 			Finish(k);
 			return returnValues;
