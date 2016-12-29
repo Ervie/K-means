@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>     
 
+
 /* Class */
 class Point_2D
 {
@@ -26,12 +27,10 @@ class Point_2D
 		}
 };
 
-std::ostream & operator<<(std::ostream & Str, const Point_2D& p)
+inline std::ostream & operator<<(std::ostream & Str, const Point_2D& p)
 {
 	return Str << "(" << p.x << "," << p.y << ")";
-}
-
-typedef vector<Point_2D>::iterator it;
+};
 
 /* Object function for calculating distance */
 struct Point2D_distance 
@@ -44,7 +43,8 @@ struct Point2D_distance
 
 struct Point2D_average
 {
-	inline Point_2D operator()(it start, int groupId, int* currentGroupId, int elementCount, Point_2D oldCentroid)
+	template <typename Iterator>
+	inline Point_2D operator()(Iterator start, int groupId, int* currentGroupId, int elementCount, Point_2D oldCentroid)
 	{
 		Point_2D newCentroid = Point_2D(0.0, 0.0);
 		int count = 0;

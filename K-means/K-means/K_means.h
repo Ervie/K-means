@@ -5,14 +5,12 @@
 #include <iterator>
 #include <vector>
 
-using namespace std;
 
 template <typename T> 
 class K_means
 {
 	public:
-		//typedef typename vector<T>::iterator Iterator;
-		typedef typename std::iterator<random_access_iterator_tag, T> Iterator;
+		typedef typename vector<T>::iterator Iterator;
 
 	private:
 		T* Centroids;
