@@ -7,32 +7,30 @@
 
 using namespace std;
 
-template <typename Iterator> 
+template <typename T> 
 class K_means
 {
 	public:
-		typedef typename vector<Iterator>::iterator it;
+		//typedef typename vector<T>::iterator Iterator;
+		typedef typename std::iterator<random_access_iterator_tag, T> Iterator;
 
 	private:
-		Iterator* Centroids;
+		T* Centroids;
 		int* currentGroupId;
 		int* nextGroupId;
 		double** distancesMatrix;
-		it* returnValues;
+		Iterator* returnValues;
 
 		double groupMinimum;
 		int groupStartIndex;
 
 	public:
 		/* Template functions disallow declaration in cpp file */
-
-		
-
-		K_means<Iterator>()
+		K_means<T>()
 		{
-			
 		}
 
+		// Initialize structures and check input parameters
 		void Initialize(int elementCount, int groupNumber)
 		{
 			if (groupNumber < 1)
@@ -47,8 +45,8 @@ class K_means
 			groupMinimum = DBL_MAX;
 			groupStartIndex = 0;
 
-			Centroids = new Iterator[groupNumber];
-			returnValues = new it[groupNumber];
+			Centroids = new T[groupNumber];
+			returnValues = new Iterator[groupNumber];
 			currentGroupId = new int[elementCount];
 			nextGroupId = new int[elementCount];
 
@@ -72,26 +70,16 @@ class K_means
 			}
 		}
 
-		void AssignStartingPoints(int groupNumber, int elementCount, it first)
+		// Randomly selects starting points of centroids from data collection
+		void AssignStartingPoints(int groupNumber, int elementCount, Iterator first)
 		{
-			/*Iterator generatedValue;
-
-			Centroids[0] = *(first + (rand() % elementCount));
-
-			for (int i = 1; i < groupNumber; i++)
-			{
-				while (find(begin(Centroids), end(Centroids), generatedValue) != end(Centroids))
-					generatedValue = *(first + (rand() % elementCount));
-
-				Centroids[i] = generatedValue;
-			}*/
-
 			for (int i = 0; i < groupNumber; i++)
 			{
 				Centroids[i] = *(first + (rand() % elementCount));
 			}
 		}
 
+		// Free allocated memory
 		void Finish(int groupNumber)
 		{
 			delete Centroids;
@@ -106,7 +94,8 @@ class K_means
 			delete [] distancesMatrix;
 		}
 
-		void DisplayCollection(it first, it last)
+		// Display all elements from range using output stream (data type must gave << operator)
+		void DisplayCollection(Iterator first, Iterator last)
 		{
 			int elementCount = distance(first, last);
 
@@ -117,8 +106,9 @@ class K_means
 			cout << endl;
 		}
 
+		// Main function, sorts elements in range by their cluster and return array of iterator pointing at begining of each cluster
 		template <typename DistancePredicate, typename AveragePredicate>
-		it* Group(it first, it last, DistancePredicate &distanceMeasure, AveragePredicate &averagingFunction, int maxIteration, int k, StopConditions stopCondition)
+		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition)
 		{
 			int elementCount = distance(first, last);
 			int iterationCounter = 0;
@@ -127,9 +117,6 @@ class K_means
 			Initialize(elementCount, k);
 
 			AssignStartingPoints(k, elementCount, first);
-
-			if (first == last)
-				return returnValues;
 
 			do
 				{
@@ -162,7 +149,7 @@ class K_means
 
 				for (int i = 0; i < k; i++)
 				{
-					Centroids[i] = averagingFunction(first, i, nextGroupId, elementCount, Centroids[i]);
+					Centroids[i] = groupAverage(first, i, nextGroupId, elementCount, Centroids[i]);
 				}
 
 				iterationCounter++;

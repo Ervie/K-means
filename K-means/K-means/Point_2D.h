@@ -42,20 +42,6 @@ struct Point2D_distance
 	}
 };
 
-/* Averaging function */
-//Point_2D Point2D_average(Point_2D data[])
-//{
-//	Point_2D result(0,0);
-//	int count;
-//
-//	for (int i = 0; i < sizeof(data)/sizeof(data[0]) ; i++)
-//	{
-//		
-//	}
-//
-//	return result;
-//}
-
 struct Point2D_average
 {
 	inline Point_2D operator()(it start, int groupId, int* currentGroupId, int elementCount, Point_2D oldCentroid)

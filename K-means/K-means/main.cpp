@@ -19,14 +19,15 @@ int main(int argc, char** argv)
 {
 	srand(time(NULL));
 
-	IntegerScenario();
+	//IntegerScenario();
 	Point2DScenario();
+	/*BitmapScenario(3, "input.bmp", "output.bmp");
 	BitmapScenario(2, "input01.bmp", "outputK2.bmp");
 	BitmapScenario(3, "input01.bmp", "outputK3.bmp");
 	BitmapScenario(5, "input01.bmp", "outputK5.bmp");
-	BitmapScenario(5, "input01.bmp", "outputK5_1.bmp");
+	BitmapScenario(5, "input01.bmp", "outputK5_1.bmp");*/
 
-	cout << "Zakoñczono przetwarzanie" << endl;
+	cout << "Koniec przetwarzania" << endl;
 	cin.get();
 	return 0;
 }
@@ -50,7 +51,7 @@ void IntegerScenario()
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 
-	result = k_means.Group(vec.begin(), vec.end(), Int_distance(), Int_average(), 3, 2, MaxIterations);
+	//result = k_means.Group(vec.begin(), vec.end(), Int_distance(), Int_average(), 3, 2, MaxIterations);
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 }
@@ -96,7 +97,7 @@ void BitmapScenario(int k, string inputFileName, string outputFileName)
 		return;
 	}
 
-	// read only non-white (#FFFFFF) pixels
+	// read only non-white (not #FFFFFF) pixels
 	for  (unsigned int i = 0; i < image.width(); i++)
 	{
 		for (unsigned int j = 0; j < image.height(); j++)
@@ -105,19 +106,18 @@ void BitmapScenario(int k, string inputFileName, string outputFileName)
 
 			if (colour.blue < 255 && colour.red < 255 && colour.green < 255)
 				vec.push_back(Point_2D(i, j));
-
 		}
 	}
 
 	// computing
-	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, k, StableState);
+	//result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 1, k, StableState);
 
 	// coloring
 	for (int i = 0; i < k; i++)
 	{
-		for (std::vector<Point_2D>::iterator it = result[i]; it != vec.end(); it++)
+		for (std::vector<Point_2D>::iterator it = result[i]; (i == (k - 1)) ? it != vec.end() : it != result[i + 1]; it++)
 		{
-			image.set_pixel((int)it->x, (int)it->y, palette_colormap[(6*i) % 50]);
+			image.set_pixel((int)it->x, (int)it->y, palette_colormap[50 / k * i]);
 		}
 	}
 	image.save_image(outputFileName);

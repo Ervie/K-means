@@ -2865,8 +2865,8 @@ inline double weighted_distance(const rgb_t c0, const rgb_t c1)
                             c1.red, c1.green, c1.blue);
 }
 
-template <typename Iterator>
-inline rgb_t find_nearest_color(const rgb_t& c, const Iterator begin, const Iterator end)
+template <typename T>
+inline rgb_t find_nearest_color(const rgb_t& c, const T begin, const T end)
 {
    if (0 == std::distance(begin,end))
       return c;
@@ -2874,7 +2874,7 @@ inline rgb_t find_nearest_color(const rgb_t& c, const Iterator begin, const Iter
    double min_d     = std::numeric_limits<double>::max();
    rgb_t result = *begin;
 
-   for (Iterator itr = begin; itr != end; ++itr)
+   for (T itr = begin; itr != end; ++itr)
    {
       if (c == (*itr))
       {
