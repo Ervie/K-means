@@ -104,9 +104,17 @@ class K_means
 			cout << endl;
 		}
 
+		// Dispatcher for Random Access Iterator
+		template <typename Iterator, typename DistancePredicate, typename AveragePredicate>
+		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition)
+		{
+			typedef typename std::iterator_traits<Iterator>::iterator_category category;
+			return Group(first, last, category(), distanceMeasure, groupAverage, maxIteration, k, stopCondition);
+		}
+
 		// Main function, sorts elements in range by their cluster and return array of iterator pointing at begining of each cluster
 		template <typename DistancePredicate, typename AveragePredicate>
-		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition)
+		Iterator* Group(Iterator first, Iterator last, std::random_access_iterator_tag, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition)
 		{
 			int elementCount = distance(first, last);
 			int iterationCounter = 0;
