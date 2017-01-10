@@ -55,12 +55,12 @@ namespace k_means_func
 	void Finish(int groupNumber)
 	{
 
-		delete currentGroupId;
-		delete nextGroupId;
+		delete[] currentGroupId;
+		delete[] nextGroupId;
 
 		for (int i = 0; i < groupNumber; i++)
 		{
-			delete distancesMatrix[i];
+			delete[] distancesMatrix[i];
 		}
 
 		delete[] distancesMatrix;

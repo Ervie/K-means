@@ -21,15 +21,14 @@ int main(int argc, char** argv)
 
 	//IntegerScenario_Class();
 	Point2DScenario_Class();
-	Point2DScenario_Func();
-	/*BitmapScenario_Func(3, "input.bmp", "output.bmp");
+	//Point2DScenario_Func();
 	BitmapScenario_Func(2, "input01.bmp", "outputK2.bmp");
-	BitmapScenario_Func(3, "input01.bmp", "outputK3.bmp");
+	/*BitmapScenario_Func(3, "input01.bmp", "outputK3.bmp");
 	BitmapScenario_Func(5, "input01.bmp", "outputK5.bmp");
 	BitmapScenario_Func(5, "input01.bmp", "outputK5_1.bmp");*/
-	BitmapScenario_Func(4, "random.bmp", "random1.bmp");
-	BitmapScenario_Func(5, "random.bmp", "random2.bmp");
-	BitmapScenario_Func(10, "random.bmp", "random3.bmp");
+	//BitmapScenario_Func(4, "random.bmp", "random1.bmp");
+	//BitmapScenario_Func(5, "random.bmp", "random2.bmp");
+	//BitmapScenario_Func(10, "random.bmp", "random3.bmp");
 
 	cout << "Koniec przetwarzania" << endl;
 	cin.get();
@@ -77,7 +76,7 @@ void Point2DScenario_Class()
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 
-	auto result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 6, StableState);
+	auto result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 3, StableState);
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 }
@@ -108,6 +107,7 @@ void BitmapScenario_Func(int k, string inputFileName, string outputFileName)
 	bitmap_image image(inputFileName);
 	rgb_t colour;
 
+	K_means<Point_2D> k_means;
 	vector<Point_2D>::iterator* result;
 
 	vector<Point_2D> vec = vector<Point_2D>();
@@ -131,7 +131,7 @@ void BitmapScenario_Func(int k, string inputFileName, string outputFileName)
 	}
 
 	// computing
-	result = k_means_func::Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 3, k, MaxIterations);
+	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 3, k, StableState);
 
 	// coloring
 	for (int i = 0; i < k; i++)
