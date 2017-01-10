@@ -84,7 +84,6 @@
     <ClInclude Include="bitmap_image.hpp" />
     <ClInclude Include="IntTest.h" />
     <ClInclude Include="K_means.h" />
-    <ClInclude Include="K_means_func.h" />
     <ClInclude Include="Point_2D.h" />
     <ClInclude Include="StopConditions.h" />
   </ItemGroup>

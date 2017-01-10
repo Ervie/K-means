@@ -35,8 +35,5 @@
     <ClInclude Include="bitmap_image.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="K_means_func.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

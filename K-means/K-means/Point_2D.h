@@ -43,22 +43,11 @@ struct Point2D_distance
 
 struct Point2D_average
 {
-	template <typename Iterator>
-	inline Point_2D operator()(Iterator start, int groupId, int* currentGroupId, int elementCount, Point_2D oldCentroid)
+	Point_2D newCentroid = Point_2D(0.0, 0.0);
+	int count = 0;
+
+	inline void operator()(Point_2D &oldCentroid)
 	{
-		Point_2D newCentroid = Point_2D(0.0, 0.0);
-		int count = 0;
-
-		for (int i = 0; i < elementCount; i++)
-		{
-			if (currentGroupId[i] == groupId)
-			{
-				newCentroid.x += (start + i)->x;
-				newCentroid.y += (start + i)->y;
-				count++;
-			}
-		}
-
 		if (count != 0)
 		{
 			newCentroid.x /= count;
@@ -70,6 +59,18 @@ struct Point2D_average
 			newCentroid.y = oldCentroid.y;
 		}
 
-		return newCentroid;
+		oldCentroid.x = newCentroid.x;
+		oldCentroid.y = newCentroid.y;
+
+		newCentroid = Point_2D(0.0, 0.0);
+		count = 0;
+	}
+
+	inline void operator +=(const Point_2D & p)
+	{
+		newCentroid.x += p.x;
+		newCentroid.y += p.y;
+
+		count++;
 	}
 };

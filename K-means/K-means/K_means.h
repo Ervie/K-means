@@ -19,6 +19,11 @@ class K_means
 		double** distancesMatrix;
 		Iterator* returnValues;
 
+		int iterationCounter;
+		int groupNumber;
+		long elementCount;
+		bool stopConditionFulfilled;
+
 		double groupMinimum;
 		int groupStartIndex;
 
@@ -42,25 +47,27 @@ class K_means
 
 		// Dispatcher for Random Access Iterator
 		template <typename Iterator, typename DistancePredicate, typename AveragePredicate>
-		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition)
+		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput = false)
 		{
 			typedef typename std::iterator_traits<Iterator>::iterator_category category;
-			return Group(first, last, category(), distanceMeasure, groupAverage, maxIteration, k, stopCondition);
+			return Group(first, last, category(), distanceMeasure, groupAverage, maxIteration, k, stopCondition, printOutput);
 		}
 
 
 private:
 		// Main function, sorts elements in range by their cluster and return array of iterator pointing at begining of each cluster
 		template <typename DistancePredicate, typename AveragePredicate>
-		Iterator* Group(Iterator first, Iterator last, std::random_access_iterator_tag, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition)
+		Iterator* Group(Iterator first, Iterator last, std::random_access_iterator_tag, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput)
 		{
-			int elementCount = distance(first, last);
-			int iterationCounter = 0;
-			bool stopConditionFulfilled = false;
+			elementCount = distance(first, last);
+			groupNumber = k;
 
-			Initialize(elementCount, k);
+			iterationCounter = 0;
+			stopConditionFulfilled = false;
 
-			AssignStartingPoints(k, elementCount, first);
+			Initialize();
+
+			AssignStartingPoints(first);
 
 			do
 			{
@@ -93,16 +100,24 @@ private:
 
 				for (int i = 0; i < k; i++)
 				{
-					Centroids[i] = groupAverage(first, i, nextGroupId, elementCount, Centroids[i]);
+					for (int j = 0; j < elementCount; j++)
+					{
+						if (nextGroupId[j] == i)
+						{
+							groupAverage += *(first + j);
+						}
+					}
+
+					groupAverage(Centroids[i]);
 				}
 
 				iterationCounter++;
 
 				/* Check end condition */
 
-				if (stopCondition == MaxIterations)
+				if (stopCondition == MaxIterations || stopCondition == Both)
 					stopConditionFulfilled = (iterationCounter >= maxIteration);
-				else
+				else if (stopCondition == StableState || stopCondition == Both)
 				{
 					stopConditionFulfilled = true;
 					for (int i = 0; i < elementCount; i++)
@@ -120,7 +135,11 @@ private:
 				for (int i = 0; i < elementCount; i++)
 					currentGroupId[i] = nextGroupId[i];
 
-				DisplayCurrentIterationState(iterationCounter, k, first, last);
+
+				/* Print information about current iteration */
+
+				if (printOutput)
+					DisplayCurrentIterationState();
 
 			} while (!stopConditionFulfilled);
 
@@ -143,13 +162,13 @@ private:
 
 			}
 
-			Finish(k);
+			Finish();
 			return returnValues;
 
 		}
 
 		// Initialize structures and check input parameters
-		void Initialize(int elementCount, int groupNumber)
+		void Initialize()
 		{
 			if (groupNumber < 1)
 				throw std::logic_error("Liczba grup jest mniejsza ni¿ 1");
@@ -189,7 +208,7 @@ private:
 		}
 
 		// Randomly selects starting points of centroids from data collection
-		void AssignStartingPoints(int groupNumber, int elementCount, Iterator first)
+		void AssignStartingPoints(Iterator first)
 		{
 			for (int i = 0; i < groupNumber; i++)
 			{
@@ -197,11 +216,9 @@ private:
 			}
 		}
 
-		void DisplayCurrentIterationState(int iterationNumber, int groupNumber, Iterator first, Iterator last)
+		void DisplayCurrentIterationState()
 		{
-			cout << "Iteration " << iterationNumber << ":" << endl;
-
-			int elementCount = distance(first, last);
+			cout << "Iteration " << iterationCounter << ":" << endl;
 
 			cout << "\tGroups:" << endl;
 
@@ -221,7 +238,7 @@ private:
 		}
 
 		// Free allocated memory
-		void Finish(int groupNumber)
+		void Finish()
 		{
 			delete[] Centroids;
 			delete[] currentGroupId;
