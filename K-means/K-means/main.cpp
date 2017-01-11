@@ -11,7 +11,6 @@
 
 void IntegerScenario_Class();
 void Point2DScenario_Class();
-void Point2DScenario_Func();
 void BitmapScenario_Func(int k, string inputFileName, string outputFileName);
 
 int main(int argc, char** argv)

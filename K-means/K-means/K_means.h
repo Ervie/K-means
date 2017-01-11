@@ -5,35 +5,65 @@
 #include <iterator>
 #include <vector>
 
-
+/// <summary>
+/// Klasa implementuj¹ca algorytm K-means. 
+/// </summary>
+/// <type name="T">Typ danych </param>
 template <typename T> 
 class K_means
 {
 	public:
+		/// Iterator swobodnego dostêpu dla typu danych T.
 		typedef typename vector<T>::iterator Iterator;
 
+
 	private:
+		/// Wspó³rzêdne centroidów (œrodków grup).
 		T* Centroids;
+
+		/// Tablica przechowuj¹ca informacjê o aktualnej przynale¿noœci danych do grup.
 		int* currentGroupId;
+
+		/// Tablica przechowuj¹ca informacjê o przynale¿noœci danych do grup w nastêpnej iteracji.
 		int* nextGroupId;
+
+		/// Macierz wartoœci okreœlaj¹ca odleg³oœæ danych od œrodków grup.
 		double** distancesMatrix;
+
+		/// Wektor iteratorów wskazuj¹cych na kolejne pocz¹tki grup.
 		Iterator* returnValues;
 
+		/// Licznik iteracji algorytmu, s³u¿y do sprawdzania warunku stopu.
 		int iterationCounter;
+
+		/// Loczba grup podanych przez u¿ytkownika.
 		int groupNumber;
+
+		/// Liczba elementów znajduj¹cych siê w zakresie okreœlonym iteratorami pocz¹tku i koñca.
 		long elementCount;
+		
+		/// Flaga okreœlaj¹ca, czy zosta³ spe³niony warunek stopu.
 		bool stopConditionFulfilled;
 
+		/// Zmienna pomocnicza przechowuj¹ca informacjê o najmniejszej odleg³oœci punktu poœród wszystkich odleg³oœci pomiêdzy punktem a centroidami.
 		double groupMinimum;
+
+		/// Zmienna pomocnicza u¿ywana w trakcie obliczania indeksu elementu wskazywanego przez iterator pocz¹tku grupy.
 		int groupStartIndex;
 
 	public:
-		/* Template functions disallow declaration in cpp file */
+		/// <summary>
+		/// Konstruktor bezparametrowy.
+		/// </summary>
 		K_means<T>()
 		{
 		}
 
-		// Display all elements from range using output stream (data type must gave << operator)
+		/// <summary>
+		/// Wyœwietlenie wszystkich elementów w zakresie. Typ elementów musi posiadaæ przeci¹¿ony/przes³oniêty operator <<.
+		/// </summary>
+		/// <param name="first">Pocz¹tek zakresu.</param>
+		/// <param name="first">Koniec zakresu.</param>
 		void DisplayCollection(Iterator first, Iterator last)
 		{
 			int elementCount = distance(first, last);
@@ -45,7 +75,7 @@ class K_means
 			cout << endl;
 		}
 
-		// Dispatcher for Random Access Iterator
+		/// Dyspozytor Iteratora swobodnego dostêpu. Stanowi zabezpiecznie przed u¿yciem funkcji dla innych typów iteratorów.
 		template <typename Iterator, typename DistancePredicate, typename AveragePredicate>
 		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput = false)
 		{
@@ -55,7 +85,19 @@ class K_means
 
 
 private:
-		// Main function, sorts elements in range by their cluster and return array of iterator pointing at begining of each cluster
+		///<summary>
+		/// G³ówna funkcja implementuj¹ca algorytm grupowania metod¹ k-œrednich.
+		///</summary>
+		/// <param name="first">Pocz¹tek grupowanego zakresu.</param>
+		/// <param name="last">Koniec grupowanego zakresu.</param>
+		/// <param name="random_access_iterator_tag">Tag dla iteratora swobodnego dostêpu.</param>
+		/// <param name="distanceMeasure">Obiekt funkcyjny stanowi¹cy miarê odleg³oœci dla typu T.</param>
+		/// <param name="groupAverage">Obiekt funkcyjny bêd¹cy funkcj¹ uœredniaj¹c¹ dla typu T.</param>
+		/// <param name="maxIteration">Maksymalna liczba iteracji algorytmu.</param>
+		/// <param name="k">Liczba grup.</param>
+		/// <param name="stopCondition">Warunek stopu.</param>
+		/// <param name="printOutput">Flaga okreœlaj¹ca, czy informacje o aktualnej iteracji maj¹ zostaæ wyprowadzone na strumieñ wyjœciowy.</param>
+		/// <returns>Wektor iteratorów sowobodnego dostêpu wskazuj¹cych na kolejne pocz¹tki grup pogrupowanych danych.</returns>
 		template <typename DistancePredicate, typename AveragePredicate>
 		Iterator* Group(Iterator first, Iterator last, std::random_access_iterator_tag, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput)
 		{
@@ -167,7 +209,9 @@ private:
 
 		}
 
-		// Initialize structures and check input parameters
+		///<summary>
+		/// Sprawdzenie poprawnoœci podanych danych oraz alokacja potrzebnej pamiêci na struktury pomocnicze.
+		///</summary>
 		void Initialize()
 		{
 			if (groupNumber < 1)
@@ -207,7 +251,10 @@ private:
 			}
 		}
 
-		// Randomly selects starting points of centroids from data collection
+		///<summary>
+		/// Wygenerowanie pocz¹tkowych wartoœci centroidów metod¹ wyboru losowaych wartoœci poœród danych
+		///</summary>
+		///<parameter name="first">Pocz¹tek grupowanego parametru.</parameter>
 		void AssignStartingPoints(Iterator first)
 		{
 			for (int i = 0; i < groupNumber; i++)
@@ -216,6 +263,9 @@ private:
 			}
 		}
 
+		///<summary>
+		/// Wyœwietlenie informacji o aktualnej przynale¿noœci danych do grup oraz wspó³rzêdnych centroidów.
+		///</summary>
 		void DisplayCurrentIterationState()
 		{
 			cout << "Iteration " << iterationCounter << ":" << endl;
@@ -237,7 +287,9 @@ private:
 			cout << endl;
 		}
 
-		// Free allocated memory
+		///<summary>
+		/// Dealokacja pamiêci.
+		///</summary>
 		void Finish()
 		{
 			delete[] Centroids;
@@ -251,6 +303,4 @@ private:
 
 			delete [] distancesMatrix;
 		}
-
-	public:
 };
