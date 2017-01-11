@@ -1,0 +1,94 @@
+% !TeX spellcheck = pl_PL
+\documentclass[a4paper]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[unicode, bookmarks=true]{hyperref} %do zakładek
+\usepackage{tabto} % do tabulacji
+\NumTabs{6} % globalne ustawienie wielkosci tabulacji
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{dcolumn}
+\usepackage{bigstrut}
+\usepackage{color}
+\usepackage{epigraph}
+\usepackage{wrapfig}
+\usepackage{MnSymbol}
+\usepackage{xparse}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{courier}
+\usepackage[toc,page]{appendix}
+
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\lstset{framextopmargin=50pt,frame=leftline}
+
+%załączniki - polskie nazwy 
+\renewcommand\appendixtocname{Załącznik} %spis treści 
+\renewcommand\appendixpagename{Załącznik} %strona sekcji 
+
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\setlength{\epigraphwidth}{0.5\textwidth}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\setlength{\textheight}{24cm}
+\setlength{\textwidth}{15.92cm}
+\setlength{\footskip}{10mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\topmargin}{0mm}
+\setlength{\headsep}{10mm}
+\setlength{\voffset}{-7mm}
+
+\makeatletter
+\def\@seccntformat#1{%
+	\expandafter\ifx\csname c@#1\endcsname\c@section
+	\thesection.
+	\else
+	\csname the#1\endcsname\quad
+	\fi}
+\makeatother
+
+%\titlespacing*{\section}
+%{0pt}{0pt}{-0.2cm}
+
+\usepackage{fancyhdr} % Required for modifying headers and footers
+\fancyhead[L]{\textsf{\rightmark}} % Top left header
+\fancyhead[R]{\textsf{\leftmark}} % Top right header
+\renewcommand{\headrulewidth}{1.2pt} % Rule under the header
+\fancyfoot[C]{\textbf{\textsf{\thepage}}} % Bottom center footer
+\renewcommand{\footrulewidth}{1.2pt} % Rule under the footer
+\pagestyle{fancy} % Use the custom headers and footers throughout the document
+
+\usepackage{titlesec}
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\begin{document}
+	%\kslistofremarks
+	%	\maketitle
+	\input{front.tex}
+	
+	\tableofcontents
+	\newpage
+	\input{Intro.tex}
+	\newpage
+
+\end{document}
+
+
