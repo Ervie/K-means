@@ -14,7 +14,7 @@ class K_means
 {
 	public:
 		/// Iterator swobodnego dostêpu dla typu danych T.
-		typedef typename vector<T>::iterator Iterator;
+		typedef typename std::vector<T>::iterator returnIterator;
 
 
 	private:
@@ -31,7 +31,7 @@ class K_means
 		double** distancesMatrix;
 
 		/// Wektor iteratorów wskazuj¹cych na kolejne pocz¹tki grup.
-		Iterator* returnValues;
+		returnIterator* returnValues;
 
 		/// Licznik iteracji algorytmu, s³u¿y do sprawdzania warunku stopu.
 		int iterationCounter;
@@ -64,6 +64,7 @@ class K_means
 		/// </summary>
 		/// <param name="first">Pocz¹tek zakresu.</param>
 		/// <param name="first">Koniec zakresu.</param>
+		template <typename Iterator>
 		void DisplayCollection(Iterator first, Iterator last)
 		{
 			int elementCount = distance(first, last);
@@ -98,8 +99,8 @@ private:
 		/// <param name="stopCondition">Warunek stopu.</param>
 		/// <param name="printOutput">Flaga okreœlaj¹ca, czy informacje o aktualnej iteracji maj¹ zostaæ wyprowadzone na strumieñ wyjœciowy.</param>
 		/// <returns>Wektor iteratorów sowobodnego dostêpu wskazuj¹cych na kolejne pocz¹tki grup pogrupowanych danych.</returns>
-		template <typename DistancePredicate, typename AveragePredicate>
-		Iterator* Group(Iterator first, Iterator last, std::random_access_iterator_tag, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput)
+		template <typename Iterator, typename DistancePredicate, typename AveragePredicate>
+		returnIterator* Group(Iterator first, Iterator last, std::random_access_iterator_tag, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput)
 		{
 			elementCount = distance(first, last);
 			groupNumber = k;
@@ -227,7 +228,7 @@ private:
 			groupStartIndex = 0;
 
 			Centroids = new T[groupNumber];
-			returnValues = new Iterator[groupNumber];
+			returnValues = new returnIterator[groupNumber];
 			currentGroupId = new int[elementCount];
 			nextGroupId = new int[elementCount];
 
@@ -255,6 +256,7 @@ private:
 		/// Wygenerowanie pocz¹tkowych wartoœci centroidów metod¹ wyboru losowaych wartoœci poœród danych
 		///</summary>
 		///<parameter name="first">Pocz¹tek grupowanego parametru.</parameter>
+		template <typename Iterator>
 		void AssignStartingPoints(Iterator first)
 		{
 			for (int i = 0; i < groupNumber; i++)

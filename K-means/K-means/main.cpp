@@ -20,13 +20,13 @@ int main(int argc, char** argv)
 	//IntegerScenario_Class();
 	Point2DScenario_Class();
 	//Point2DScenario_Func();
-	//BitmapScenario_Func(2, "input01.bmp", "outputK2.bmp");
-	/*BitmapScenario_Func(3, "input01.bmp", "outputK3.bmp");
-	BitmapScenario_Func(5, "input01.bmp", "outputK5.bmp");
-	BitmapScenario_Func(5, "input01.bmp", "outputK5_1.bmp");*/
-	BitmapScenario_Func(4, "random.bmp", "random1.bmp");
-	//BitmapScenario_Func(5, "random.bmp", "random2.bmp");
-	//BitmapScenario_Func(10, "random.bmp", "random3.bmp");
+	//BitmapScenario_Func(2, "ExampleData/input01.bmp", "ExampleData/outputK2.bmp");
+	/*BitmapScenario_Func(3, "ExampleData/input01.bmp", "ExampleData/outputK3.bmp");
+	BitmapScenario_Func(5, "ExampleData/input01.bmp", "ExampleData/outputK5.bmp");
+	BitmapScenario_Func(5, "ExampleData/input01.bmp", "ExampleData/outputK5_1.bmp");*/
+	BitmapScenario_Func(4, "ExampleData/random.bmp", "ExampleData/random1.bmp");
+	//BitmapScenario_Func(5, "ExampleData/random.bmp", "ExampleData/random2.bmp");
+	//BitmapScenario_Func(10, "ExampleData/random.bmp", "ExampleData/random3.bmp");
 
 	cout << "Koniec przetwarzania" << endl;
 	cin.get();
