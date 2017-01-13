@@ -11,7 +11,7 @@
 
 void IntegerScenario_Class();
 void Point2DScenario_Class();
-void BitmapScenario_Func(int k, string inputFileName, string outputFileName);
+void BitmapScenario(int k, string inputFileName, string outputFileName);
 
 int main(int argc, char** argv)
 {
@@ -19,12 +19,11 @@ int main(int argc, char** argv)
 
 	//IntegerScenario_Class();
 	Point2DScenario_Class();
-	//Point2DScenario_Func();
 	//BitmapScenario_Func(2, "ExampleData/input01.bmp", "ExampleData/outputK2.bmp");
 	/*BitmapScenario_Func(3, "ExampleData/input01.bmp", "ExampleData/outputK3.bmp");
 	BitmapScenario_Func(5, "ExampleData/input01.bmp", "ExampleData/outputK5.bmp");
 	BitmapScenario_Func(5, "ExampleData/input01.bmp", "ExampleData/outputK5_1.bmp");*/
-	BitmapScenario_Func(4, "ExampleData/random.bmp", "ExampleData/random1.bmp");
+	//BitmapScenario_Func(4, "ExampleData/random.bmp", "ExampleData/random1.bmp");
 	//BitmapScenario_Func(5, "ExampleData/random.bmp", "ExampleData/random2.bmp");
 	//BitmapScenario_Func(10, "ExampleData/random.bmp", "ExampleData/random3.bmp");
 
@@ -74,12 +73,12 @@ void Point2DScenario_Class()
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 
-	auto result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 4, 3, StableState, true);
+	auto result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 3, 2, StableState, true);
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 }
 
-void BitmapScenario_Func(int k, string inputFileName, string outputFileName)
+void BitmapScenario(int k, string inputFileName, string outputFileName)
 {
 	bitmap_image image(inputFileName);
 	rgb_t colour;

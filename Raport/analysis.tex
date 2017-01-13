@@ -1,0 +1,91 @@
+\section{Analiza problemu}
+
+Przed przystąpieniem do pracy nad algorytmem, należało rozwiązać kilka problemów projektowych.
+
+\subsection{Problem doboru punktów początkowych}
+
+Podstawowym krokiem przy każdym wywołaniu algorytmu jest ustalenie punktów początkowych. Wyniki algorytmu k-średnich silnie zależą od wyboru punktów początkowych, jednak nie ma ściśle określonej reguły, jak je należy wybierać. W zależności od startowej wartości centroidów, wyniki grupowania mogą być inne z każdym uruchomieniem algorytmu (nawet przy identycznych parametrach). Początkowo wydaje się, że wybór losowych współrzędnych jest dobrym rozwiązaniem. Przeszkodą jest jednak założenia generyczności algorytmy -- istnieje możliwość wyboru losowego punktu pośród wartości typu int lub klasy reprezentującej punkt na płaszczyźnie dwuwymiarowej, jednak zadanie jest znacznie utrudnione w przypadku np. typu string lub klasy zewnętrznej pochodzącej z innego projektu. W takim przypadku warunkiem uniemożliwiającym wybór losowych współrzędnych jest brak wiedzy na temat budowy typu lub nawet niemożliwość utworzenia obiektu o losowych współrzędnych.
+
+Rozwiązaniem problemu jest wybór losowych elementów z zakresu podanego do grupowania. W pierwszej iteracji środki skupień znajdują się dokładnie w tym samym miejscu, w którym istnieją niektóre z danych wejściowych.
+
+\subsection{Miara odległości}\label{metric}
+
+Algorytm ma zapewniać generyczność -- dlatego dla typu danych na którym chcemy wykonać grupowanie musi istnieć miara odległości (metryka), pozwalająca określić odległość pomiędzy dwoma dowolnymi elementami tego typu (w najczęstszym scenariuszu - pomiędzy daną wejściową, a centroidem). Zakłada się, że odległość ewaluowana jest jako wartość typu \texttt{double}. W celu zapewnienia poprawności działania algorytmu, konieczne jest przekazanie do funkcji grupującej obiektu funkcyjnego (z przeciążonym operatorem \texttt{()}) zwracającą wartość zmiennoprzecinkową, będącą miarą odległości pomiędzy 2 elentami. Przykład implementacji dla typy \texttt{int} znajduje się poniżej.
+
+\begin{lstlisting}
+/// <summary>
+/// Obiekt funkcyjny, bedacy miara odleglosci pomiedzy dwoma wartosciami typu int.
+/// </summary>
+struct Int_distance
+{
+	inline double operator()(int p1, int p2)
+	{
+		return (double)abs(p1 - p2);
+	}
+};
+\end{lstlisting}
+
+Sposób w jaki implementowana jest metryka leży w pełni w kwestii osoby korzystającej z algorytmu. Dla punktów w przestrzeni dwuwymiarowej może to być metryka euklidesowa lub miejska (Manhattan), dla typu char odległość dzieląca znaki w tablicy ASCII, itp.
+
+\subsection{Funkcja uśredniejąca}\label{avg}
+
+Podobnie jak w przypadku metryki, z powodu generyczności funkcji konieczne jest zadeklarowanie obiektu funkcyjnego określającego, w jaki sposób obliczany będzie nowy centroid spośród n elementów należących do skupienia. Funktor powinien pozwalać na 2 operacje:
+
+\begin{itemize}
+	\item Kumulację obiektów -- dodanie nowego obiektu (przekazanego jako referencję) do skumulowanej wartości oraz inkrementacja licznika dodanych punktów. Realizowane przez przeciążony operator \texttt{+=}.
+	\item Uśrednienie -- wyliczenie nowych współrzędnych centroidu na podstawie skumulowanej wartości oraz liczby skumulowanych elementów. Realizowane przez przeciążony operator \texttt{()}. Jako parametr należy przekazać obiekt obliczanego typu -- jest to poprzednia wartość środku skupienia. Jeżeli liczba obiektów należących do danej grupy jest większa niż 0, przekazany obiekt jest aktualizowany do wartości nowego centroidu. Jeżeli liczba elementów w grupie jest równa 0, centroid nie jest nadpisywany
+\end{itemize}
+
+Przykład implementacji uśredniającego obiektu funkcyjnego dla typi \texttt{int} znajduje się poniżej.
+
+\begin{lstlisting}
+struct Int_average
+{
+	/// Wartosc domyslna nowego centroidu.
+	int newCentroid = 0;
+	
+	/// Licznik kumulowanych wartosci.
+	int count = 0;
+	
+	/// <summary>
+	/// Przeciazony operator (), wyliczajacy nowa wartosc centroidu usredniona z n elementow.
+	/// </summary>
+	/// <param name="oldCentroid">Aktualna wartosc centroidu</param>
+	inline void operator()(int &oldCentroid)
+	{
+		if (count != 0)
+			newCentroid = (int)(newCentroid / count);
+		else
+			newCentroid = oldCentroid;
+		
+		oldCentroid = newCentroid;
+		
+		newCentroid = 0;
+		count = 0;
+	}
+	
+	/// <summary>
+	/// Przeciazony operator +=, kumulujacy kolejna wartosc.
+	/// </summary>
+	/// <param name="value">Kolejna kumulowana wartosc.</param>
+	inline void operator +=(const int & value)
+	{
+		newCentroid += value;
+		
+		count++;
+	}
+};
+\end{lstlisting}
+
+Warunkiem koniecznym do poprawnego działania algorytmu jest zadeklarowanie obiektu funkcyjnego z przeciążonymi operatorami () oraz += przyjmującymi po jednym parametrze typu tożsamego do grupowanych danych. Reszta szczegółów dotyczących implementacji leży w kwestii użytkownika.
+
+\subsection{Warunki stopu}\label{stop}
+
+Zaimplementowana funkcja pozwala na wybór jednego z dwóch (lub obu jednocześnie) warunku zatrzymania wykonywania algorytmu.
+
+\begin{itemize}
+	\item Maksymalna liczba iteracji -- program kończy grupowanie elementów po wykonaniu określonej liczby iteracji zadanej jako parametr wejściowy.
+	\item Osiągnięcie stanu stabilnego -- jako stan stailny określamy sytuację, w której w dwóch kolejnych iteracjach nie nastąpi żadna zmiana przynależności do skupienia.
+\end{itemize}
+
+Podanie warunku stopu jako parametr odbywa się przez typ wyliczeniowy.
