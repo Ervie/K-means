@@ -1,1 +1,20 @@
 \contentsline {section}{\numberline {1}Wst\IeC {\k e}p}{2}{section.0.1}
+\contentsline {subsection}{\numberline {1.1}Temat projektu}{2}{subsection.0.1.1}
+\contentsline {subsection}{\numberline {1.2}Zasada dzia\IeC {\l }ania algorytmu}{2}{subsection.0.1.2}
+\contentsline {section}{\numberline {2}Analiza problemu}{3}{section.0.2}
+\contentsline {subsection}{\numberline {2.1}Problem doboru punkt\IeC {\'o}w pocz\IeC {\k a}tkowych}{3}{subsection.0.2.1}
+\contentsline {subsection}{\numberline {2.2}Miara odleg\IeC {\l }o\IeC {\'s}ci}{3}{subsection.0.2.2}
+\contentsline {subsection}{\numberline {2.3}Funkcja u\IeC {\'s}redniej\IeC {\k a}ca}{3}{subsection.0.2.3}
+\contentsline {subsection}{\numberline {2.4}Warunki stopu}{4}{subsection.0.2.4}
+\contentsline {section}{\numberline {3}Specyfikacja zewn\IeC {\k e}trzna}{4}{section.0.3}
+\contentsline {subsection}{\numberline {3.1}Wykorzystanie algorytmu}{4}{subsection.0.3.1}
+\contentsline {subsection}{\numberline {3.2}Opis parametr\IeC {\'o}w wywo\IeC {\l }ania funkcji Group}{5}{subsection.0.3.2}
+\contentsline {subsection}{\numberline {3.3}Opis parametr\IeC {\'o}w wywo\IeC {\l }ania funkcji DisplayCollection}{6}{subsection.0.3.3}
+\contentsline {subsection}{\numberline {3.4}Przyk\IeC {\l }ad scenariusza u\IeC {\.z}ycia}{6}{subsection.0.3.4}
+\contentsline {section}{\numberline {4}Specyfikacja wewn\IeC {\k e}trzna}{7}{section.0.4}
+\contentsline {subsection}{\numberline {4.1}Struktura projektu}{7}{subsection.0.4.1}
+\contentsline {subsection}{\numberline {4.2}Klasa K\textunderscore means}{7}{subsection.0.4.2}
+\contentsline {section}{\numberline {5}Testowanie aplikacji}{7}{section.0.5}
+\contentsline {subsection}{\numberline {5.1}Testy funkcjonalne}{7}{subsection.0.5.1}
+\contentsline {subsection}{\numberline {5.2}Grupowanie pikseli}{7}{subsection.0.5.2}
+\contentsline {section}{\numberline {6}Podsumowanie}{7}{section.0.6}

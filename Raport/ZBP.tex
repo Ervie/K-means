@@ -25,6 +25,7 @@
 \usepackage{enumitem}
 \usepackage{courier}
 \usepackage[toc,page]{appendix}
+\usepackage{listings}
 
 \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
 \lstset{framextopmargin=50pt,frame=leftline}
@@ -48,6 +49,13 @@
 \setlength{\topmargin}{0mm}
 \setlength{\headsep}{10mm}
 \setlength{\voffset}{-7mm}
+
+\lstset{language=C++,
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{green},
+	morecomment=[l][\color{magenta}]{\#}
+}
 
 \makeatletter
 \def\@seccntformat#1{%
@@ -86,8 +94,18 @@
 	
 	\tableofcontents
 	\newpage
-	\input{Intro.tex}
-	\newpage
+		
+	\input{intro.tex}
+	
+	\input{analysis.tex}
+	
+	\input{zewn.tex}
+	
+	\input{wewn.tex}
+	
+	\input{test.tex}
+	
+	\input{summary.tex}
 
 \end{document}
 

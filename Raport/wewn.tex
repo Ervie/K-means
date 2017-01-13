@@ -1,1 +1,21 @@
 \section{Specyfikacja wewnętrzna}
+
+\subsection{Struktura projektu}
+
+Solucja aplikacji zawiera 6 plików. Większość deklaracji funkcji znajduje się w plikach nagłówkowych -- ze względu na generyczność klasy niemożliwa jest deklaracja fragmentów kodu w plikach źródłowych. Kompilator tworzy klasy szablonowe na etapie kompilacji.
+
+\begin{description}
+	\item[main.cpp] jest plikiem poglądowym i zawiera scenariusze testowe wykorzystania algorytmu. Nie stanowi integralnej części reszty projektu i służy jedynie pokazaniu przykładowych użyć algorytmu.
+	\item[bitmap\textunderscore image.hpp] -- plik biblioteki zewnętrznej pochodzący ze strony \url{http://www.partow.net/programming/bitmap/index.html}. Dzięki funkcjom zadeklarowanym w tym pliku możliwe jest wczytywanie bitmap do aplikacji napisanej w języku C++ i ich modyfikacja/zapis. Fragmenty tej biblioteki wykorzystywane są w pliku \texttt{main.cpp} do testowania algorytmu na bitmapach.
+	\item[IntTest.h] -- plik zawierający obiekty funkcyjne metryki i funkcji uśredniającej dla liczb całkowitych.
+	\item[Point\textunderscore 2D.h] -- zawiera deklaracje następujących elementów:
+	\begin{itemize}
+		\item Klasa \textbf{Point\textunderscore 2D} -- klasa reprezentująca punkt na płaszczyźnie euklidesowej. Posiada 2 pola zmiennoprzecinkowe (x i y), odpowiadająca odpowiednio współrzędnej na osiach x i y.
+		\item Przeciążony \textbf{operator <<} dla typu Point\textunderscore 2D -- pozwala na wypisanie wyżej wymienionej klasy na strumień wyjściowy.
+		\item Obiekt funkcyjny \textbf{Point2D\textunderscore distance} -- funktor określający w jaki sposób ma zostać obliczona odległość pomiędzy dwoma obiektami klasy Point\textunderscore 2D.
+		\item Obiekt funkcyjny \textbf{Point2D\textunderscore average} -- funktor określający w jaki sposób kumulować oraz uśrednić wartość z wielu obiektów typu Point\textunderscore 2D.
+	\end{itemize}
+	\item[K\textunderscore means.h] -- plik zawierający główną klasę K\textunderscore means szerzej opisaną w punkcie \ref{kmeans}.
+\end{description}
+
+\subsection{Klasa K\textunderscore means}\label{kmeans}
