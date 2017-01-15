@@ -1,1 +1,14 @@
 \section{Podsumowanie}
+
+W trakcie realizacji tego projektu, nauczyłem się bardzo przydatne może być wykorzystanie iteratorów języka C++ jako argumentów. Do tej pory wykonując operacje na tablicach/kontenerach lub ich fragmentach posługiwałem się najczęściej wskaźnikami. Iteratory posiadają kilka zalet stawiających ich nad wskaźniki:
+
+\begin{itemize}
+	\item Metody udostępniane przez standardową bibliotekę wzorców ułatwiającą operacje na iteratorach (np. \texttt{std::sort}, \texttt{std::distance} czy \texttt{std::swap}).
+	\item Zwiększona elastyczność pozwalająca na iterację po elementach nawet w bardziej skomplikowanych strukturach danych (takich jak graf czy drzewo).
+	\item Zwiększone bezpieczeństwo typów.
+	\item Ułatwione tworzenie generycznego kodu.
+\end{itemize}
+
+Zachowują się przy tym jak wskaźniki (posiadając między innymi operatory dereferencji oraz inkrementacji). Jedyną niedogodnością jaką napotkałem, to brak zależności dziedziczenia pomiędzy poszczególnymi typami iteratorów. Przykładowo: każdy iterator swobodnego dostępu jest iteratorem dwukierunkowym, jednak nie łączy ich relacja dziedziczenia. Rozpoznanie typu iteratora musi odbywać się przez dodatkową strukturę \texttt{std::iterator\textunderscore traits} oraz struktury typu \texttt{\textunderscore iterator\textunderscore tag}.
+
+Metoda centroidów jest ciekawym algorytmem grupowania używanym na przykład do kwantyzacji wektorów. Pozwala ona na utworzenie grup w dość krótkim czasie (złożoność czasowa jest z reguły ograniczona przez liczbę iteracji, natomiast pamięciowa to iloczyn liczby grup i elementów do pogrupowania). Najlepiej radzi sobie zdecydowanie w przypadkach, kiedy dane wejściowe są bardziej skupione (w określonych miejscach natężenie danych jest większe). Nie zawsze otrzymywane dane są optymalne (jak w drugim przykładzie na rysunku \ref{img:shape}) -- dla takich danych lepszym rozwiązaniem moze okazać się np. metoda hierarchiczna. Na względzie trzebe mieć również, że osiągnięcie stanu stabilnego może trwać bardzo długo, ze względu na minimalne przeskoki danych między grupami w trakcie nastepujących po sobie iteracji, co wymusza kolejne. Ograniczenie maksymalną liczbą iteracji może dać wyniki niemal identyczne co stan stabilny w dużo krótszym czasie.

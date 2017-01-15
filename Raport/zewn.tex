@@ -32,7 +32,7 @@ DisplayCollection(Iterator first, Iterator last)
 	\end{lstlisting}
 \end{enumerate}
 
-\subsection{Opis parametrów wywołania funkcji Group}
+\subsection{Opis parametrów wywołania funkcji Group}\label{parameters}
 
 \begin{description}
 	\item[first] -- jest iteratorem swobodnego dostępu (używanym w takich strukturach jak na przykład vector czy deque ze standardowej biblioteki wzorców) wskazującym na pierwszy element z grupowanego zakresu.
@@ -44,7 +44,7 @@ DisplayCollection(Iterator first, Iterator last)
 	\begin{itemize}
 		\item MaxIterations -- warunkiem stopu jest wykonanie odpowiedniej liczby iteracji (podanej w parametrze \texttt{k}).
 		\item StableState -- program wykonuje się tak długo, aż w kolejnych iteracjach nie nastąpi zmiana przynależności do skupienia żadnego pośród wszystkich grupowanych elementów.
-		\item Both -- połączenie powyższych. Program wykonuje się identycznie jak w przypadku \texttt{StableState}, jednak może się zakończyć wcześniej jeżeli została wykonana określona liczba iteracji
+		\item Both -- połączenie powyższych. Program wykonuje się identycznie jak w przypadku \texttt{StableState}, jednak może się zakończyć wcześniej jeżeli została wykonana określona liczba iteracji.
 	\end{itemize}
 	\item[PrintOutput] -- określa, czy informacje o współrzędnych centroidów i przynależności punktów do skupień mają być wypisywane na strumień wyjściowy. Uwaga: może znacznie zwiększyć czas wykonywania algorytmu.
 \end{description}

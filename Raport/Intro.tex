@@ -16,24 +16,24 @@ Program miał spełniać następujące warunki:
 	\item Funkcja/Klasa imlementująca algorytm ma być szablonowa i pozwalać na grupowanie danych dowolnego typu.
 \end{itemize}
 
-\subsection{Zasada działania algorytmu}
+\subsection{Zasada działania algorytmu}\label{algorithm}
 
-\textbf{Algorytm k-średnich} (nazywany również algorytmem centroidów) jest jednym z algorytmów stosowanych w analizie skupień --  analizy polegającej na szukaniu i wyodrębnianiu grup obiektów podobnych (skupień). Należy do grupy algorytmów niehierarchicznych (charakteryzuje się koniecznością podania liczby skupień).
+\textbf{Algorytm k-średnich} (nazywany również algorytmem centroidów) jest jednym z algorytmów stosowanych w analizie skupień --  analizie polegającej na szukaniu i wyodrębnianiu grup obiektów podobnych (skupień). Należy do grupy algorytmów niehierarchicznych (charakteryzuje się koniecznością podania liczby skupień).
 
 Przy pomocy metody k-średnich zostanie utworzonych k różnych możliwie odmiennych skupień. Algorytm ten polega na przenoszeniu obiektów ze skupienia do skupienia tak długo aż zostaną zoptymalizowane zmienności wewnątrz skupień oraz pomiędzy skupieniami (lub alternatywnie zostanie wykonana maksymalna liczba iteracji).
 
 Działanie algorytmu można uprościć w kilku punktach:
 
 \begin{enumerate}
-	\item \textbf{Ustalenie liczby grup} -- wybór ustalany odgórnie, w zależnośći od potrzeb. Jedną z metod ustalenia ilości skupień jest umowny jej wybór i ewentualna późniejsza zmiana tej liczby w celu uzyskania lepszych wyników.
+	\item \textbf{Ustalenie liczby grup} -- wybór ustalany odgórnie, w zależności od potrzeb. Jedną z metod ustalenia ilości skupień jest umowny jej wybór i ewentualna późniejsza zmiana tej liczby w celu uzyskania lepszych wyników.
 	\item \textbf{Ustalenie początkowych wartości środków skupień (centroidów)} -- centroidy można dobrać na kilka sposobów:
 	\begin{itemize}
-		\item Losowy wybór k obserwacji
-		\item Wybór k pierwszych obserwacji
-		\item Wybór taki, aby zaksymalizować odległości pomiędzy centroidami
+		\item Losowy wybór k obserwacji.
+		\item Wybór k pierwszych obserwacji.
+		\item Wybór taki, aby zmaksymalizować odległości pomiędzy centroidami.
 		\item Kilkakrotne uruchomienie algorytmu (z losowym wyborem) i wybór najlepszego spośród modeli.
 	\end{itemize}
-		Jeżeli nie zna się dokładnie typu grupowanych danych, zaleca się aby początkowymi wartościami środków skupień były losowo wybrane pośród elementów wejścjowych.
+		Jeżeli nie zna się dokładnie typu grupowanych danych, zaleca się aby początkowymi wartościami środków skupień były losowo wybrane pośród elementów wejściowych.
 	\item \textbf{Obliczenie odległości obiektów od środków skupień} -- określenie odległości elementów od centroidów przy użyciu określonej metryki (najczęściej stosuje się Euklidesową).
 	\item \textbf{Przypisanie obiektów do skupień} -- Dla danej obserwacji porównywane są odległości od wszystkich centroidów i przypisanie elementu do skupienia, do którego środka ma najbliżej.
 	\item \textbf{Ustalenie nowych współrzędnych centroidów} -- nowe wartości dla środków skupień wyznaczane zą sa pomocą funkcji uśredniającej (z reguły jest to średnia arytmetyczna).

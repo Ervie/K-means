@@ -10,7 +10,7 @@ Solucja aplikacji zawiera 6 plików. Większość deklaracji funkcji znajduje si
 	\item[IntTest.h] -- plik zawierający obiekty funkcyjne metryki i funkcji uśredniającej dla liczb całkowitych.
 	\item[Point\textunderscore 2D.h] -- zawiera deklaracje następujących elementów:
 	\begin{itemize}
-		\item Klasa \textbf{Point\textunderscore 2D} -- klasa reprezentująca punkt na płaszczyźnie euklidesowej. Posiada 2 pola zmiennoprzecinkowe (x i y), odpowiadająca odpowiednio współrzędnej na osiach x i y.
+		\item Klasa \textbf{Point\textunderscore 2D} -- klasa reprezentująca punkt na płaszczyźnie euklidesowej. Posiada 2 pola zmiennoprzecinkowe (x i y), odpowiadająca odpowiednio współrzędnym na osiach x i y.
 		\item Przeciążony \textbf{operator <<} dla typu Point\textunderscore 2D -- pozwala na wypisanie wyżej wymienionej klasy na strumień wyjściowy.
 		\item Obiekt funkcyjny \textbf{Point2D\textunderscore distance} -- funktor określający w jaki sposób ma zostać obliczona odległość pomiędzy dwoma obiektami klasy Point\textunderscore 2D.
 		\item Obiekt funkcyjny \textbf{Point2D\textunderscore average} -- funktor określający w jaki sposób kumulować oraz uśrednić wartość z wielu obiektów typu Point\textunderscore 2D.
@@ -19,3 +19,48 @@ Solucja aplikacji zawiera 6 plików. Większość deklaracji funkcji znajduje si
 \end{description}
 
 \subsection{Klasa K\textunderscore means}\label{kmeans}
+
+\subsubsection{Typy}
+
+\begin{description}
+	\item[returnIterator] -- jest typem zwracanym prze funkcję \texttt{Group}. W rzeczywistości jest to iterator wektora, którego elementy wskazują na wartości typu zdefiniowanego przez użytkownika (elementy wejściowe).
+\end{description}
+
+\subsubsection{Pola}
+
+\begin{description}
+	\item[Centroids] -- współrzędne centroidów (środków grup). Zmieniają się co iterację.
+	\item[currentGroupId] -- tablica wartości całkowitych przechowująca informację o aktualnej przynależności danych do grup. Wartość i-tej komórki odpowiada numerowi grupy do której należy i-ty element.
+	\item[nextGroupId] -- tablica wartości całkowitych przechowująca informację o przynależności danych do grup w następnej iteracji. Wartość i-tej komórki odpowiada numerowi grupy do której będzie należeć i-ty element.
+	\item[distancesMatrix] -- macierz wartości zmiennoprzecinkowych określająca odległość danych od środków grup. Indeks kolumny odpowiada numerowi grupy, a indeks wiersza numerowi elementu.
+	\item[returnValues] --  wektor iteratorów typu \texttt{returnIterator} wskazujących na elementy będące kolejnymi początkami grup.
+	\item[iterationCounter] -- licznik iteracji algorytmu, służy do sprawdzania warunku stopu.
+	\item[groupNumber] -- liczba grup (skupień) podanych przez użytkownika.
+	\item[elementCount] -- liczba elementów znajdujących się w zakresie określonym iteratorami początku i końca. Wyliczana na podstawie argumentów przekazywanych przez użytkownika.
+	\item[stopConditionFulfilled] -- flaga określająca, czy został spełniony warunek stopu. Sprawdzana na końcu każdej iteracji.
+	\item[groupMinimum] -- zmienna pomocnicza przechowująca informację o najmniejszej odległości punktu pośród wszystkich odległości pomiędzy punktem a centroidami.
+	\item[groupStartIndex] -- zmienna pomocnicza używana w trakcie obliczania indeksu elementu wskazywanego przez iterator początku grupy.
+	
+\end{description}
+
+\subsubsection{Metody}
+
+\begin{description}
+	\item[void DisplayCollection(Iterator first, Iterator last)]  -- metoda nie integrujaca się z głównym algorytmem. Jej zadaniem jest wyświetlenie wszystkich elementów kolejkcji począwszy od elmentu wskazywanego przez iterator \texttt{first}, a kończąc na elemencie wskazywanym przez iterator \texttt{last}. Typ danych musi posiadać przeciążony operator \texttt{<<}.
+	\begin{itemize}
+		\item \texttt{Iterator first} -- iterator wskazujący na element typu podanego przez użytkownika będącym początkiem zakresu.
+		\item \texttt{Iterator last} -- iterator wskazujący na element typu podanego przez użytkownika będącym końcem zakresu.
+	\end{itemize}
+	
+	\item \textbf{returnIterator* Group(Iterator first, Iterator last, DistancePredicate \&distanceMeasure, AveragePredicate \&groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput = false)} -- dyspozytor iteratora swobodnego dostępu. Stanowi zabezpiecznie przed użyciem funkcji dla innych typów iteratorów. Parametry wywołania są tożsame z funkcją właściwą (za wyjątkiem znacznika iteratora) i opisane są w punkcie \ref{parameters}.
+	
+	\item \textbf{returnIterator* Group(Iterator first, Iterator last, std::random\textunderscore access\textunderscore iterator\textunderscore tag, DistancePredicate \&distanceMeasure, AveragePredicate \&groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput)} -- główna funkcja implementująca algorytm grupowania metodą k-średnich. Znaczenie parametrów wywołujących opisane jest w punkcie \ref{parameters}. \texttt{std::random\textunderscore access\textunderscore iterator\textunderscore tag} jest parametrem dodawanym sztucznie przez funkcję dyspozytora -- ponieważ publicznie dostępnie jest jedynie dyspozytor, uniemożliwia to podanie argumentów iteratora nie będącymi iteratorami swobodnego dostępu. Jest to sposób wykorzystywany w standardowej bibliotece wzorców przy funkcji \texttt{std::distance()}. W ciele funkcji wywoływana jest funkcja zgodnie z założeniami algorytmu (\ref{algorithm}).
+	
+	\item[void Initialize()] -- funkcja wywoływana na samym początku funkcji \texttt{Group}. Zajmuje się sprawdzeniem poprawności argumentów (ilość grup, zakres elementów), zaalokowaniem pamięci na struktury pomocnicze (\texttt{Centroids}, \texttt{returnValues}, \texttt{currentGroupId}, \texttt{nextGroupId} oraz \texttt{distancesMatrix}) w zależności od ilości skupień oraz elementów do pogrupowania. Ustawia również pola na odpowiednie wartości w celu przygotowania do nowego wykonania algorytmu (ustawienie \texttt{iterationCounter} oraz \texttt{groupStartIndex} na 0, \texttt{stopConditionFulfilled} na \texttt{false} oraz \texttt{groupMinimum} na \texttt{DBL\textunderscore MAX} odpowiadającej maksymalnej wartości zmiennoprzecinkowej).
+	
+	\item[void AssignStartingPoints(Iterator first)] -- funkcja wywoływana w funkcji \texttt{Group} zaraz po funkcji \texttt{Initialize}. Spośród wszystkich elementów wejściowych wybiera \texttt{groupNumber} początkowych wartości centroidów. Jako argument funkcja \texttt{Group} przekazuje do niej iterator wskazujący na pierwszy element.
+	
+	\item[void DisplayCurrentIterationState()] -- metoda wyświetlająca informacje o aktualnej przynależności danych do grup oraz współrzędnych centroidów. Jest ona wywoływana przy każdej iteracji algorytmu, o ile parametr \texttt{printOutput} ustawiony został na wartość \texttt{true}.
+	
+	\item[void Finish()] -- metoda wywoływana pod koniec metody \texttt{Group} dealokująca pamięć struktur tymczasowych inicjalizowanych w metodzie \texttt{Initialize} -- jedynym wyjątkiem jest struktura \texttt{returnValues}, która jest zwracana poza klasę.
+\end{description}

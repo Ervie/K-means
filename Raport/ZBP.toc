@@ -14,7 +14,13 @@
 \contentsline {section}{\numberline {4}Specyfikacja wewn\IeC {\k e}trzna}{7}{section.0.4}
 \contentsline {subsection}{\numberline {4.1}Struktura projektu}{7}{subsection.0.4.1}
 \contentsline {subsection}{\numberline {4.2}Klasa K\textunderscore means}{7}{subsection.0.4.2}
-\contentsline {section}{\numberline {5}Testowanie aplikacji}{7}{section.0.5}
-\contentsline {subsection}{\numberline {5.1}Testy funkcjonalne}{7}{subsection.0.5.1}
-\contentsline {subsection}{\numberline {5.2}Grupowanie pikseli}{7}{subsection.0.5.2}
-\contentsline {section}{\numberline {6}Podsumowanie}{7}{section.0.6}
+\contentsline {subsubsection}{\numberline {4.2.1}Typy}{7}{subsubsection.0.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Pola}{7}{subsubsection.0.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}Metody}{8}{subsubsection.0.4.2.3}
+\contentsline {section}{\numberline {5}Testowanie aplikacji}{9}{section.0.5}
+\contentsline {subsection}{\numberline {5.1}Testy funkcjonalne}{9}{subsection.0.5.1}
+\contentsline {subsection}{\numberline {5.2}Grupowanie pikseli}{9}{subsection.0.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Zale\IeC {\.z}no\IeC {\'s}\IeC {\'c} od warunku stopu}{10}{subsubsection.0.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Zale\IeC {\.z}no\IeC {\'s}\IeC {\'c} od liczby grup}{11}{subsubsection.0.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}Zale\IeC {\.z}no\IeC {\'s}\IeC {\'c} od danych wej\IeC {\'s}ciowych}{12}{subsubsection.0.5.2.3}
+\contentsline {section}{\numberline {6}Podsumowanie}{12}{section.0.6}

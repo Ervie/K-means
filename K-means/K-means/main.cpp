@@ -17,15 +17,17 @@ int main(int argc, char** argv)
 {
 	srand(time(NULL));
 
-	//IntegerScenario_Class();
-	Point2DScenario_Class();
-	//BitmapScenario_Func(2, "ExampleData/input01.bmp", "ExampleData/outputK2.bmp");
-	/*BitmapScenario_Func(3, "ExampleData/input01.bmp", "ExampleData/outputK3.bmp");
-	BitmapScenario_Func(5, "ExampleData/input01.bmp", "ExampleData/outputK5.bmp");
-	BitmapScenario_Func(5, "ExampleData/input01.bmp", "ExampleData/outputK5_1.bmp");*/
-	//BitmapScenario_Func(4, "ExampleData/random.bmp", "ExampleData/random1.bmp");
-	//BitmapScenario_Func(5, "ExampleData/random.bmp", "ExampleData/random2.bmp");
-	//BitmapScenario_Func(10, "ExampleData/random.bmp", "ExampleData/random3.bmp");
+	IntegerScenario_Class();
+	//Point2DScenario_Class();
+	//BitmapScenario(2, "ExampleData/input01.bmp", "ExampleData/outputK2.bmp");
+	/*BitmapScenario(3, "ExampleData/random.bmp", "ExampleData/random03.bmp");
+	BitmapScenario(5, "ExampleData/random.bmp", "ExampleData/random05.bmp");
+	BitmapScenario(5, "ExampleData/random.bmp", "ExampleData/random05_2.bmp");
+	BitmapScenario(10, "ExampleData/random.bmp", "ExampleData/random010.bmp");
+	BitmapScenario(20, "ExampleData/random.bmp", "ExampleData/random020.bmp");*/
+	BitmapScenario(3, "ExampleData/weird1.bmp", "ExampleData/weird1_1.bmp");
+	BitmapScenario(2, "ExampleData/weird2.bmp", "ExampleData/weird2_1.bmp");
+	BitmapScenario(3, "ExampleData/weird3.bmp", "ExampleData/weird3_1.bmp");
 
 	cout << "Koniec przetwarzania" << endl;
 	cin.get();
@@ -51,7 +53,7 @@ void IntegerScenario_Class()
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 
-	result = k_means.Group(vec.begin(), vec.end(), Int_distance(), Int_average(), 3, 2, MaxIterations, true);
+	result = k_means.Group(vec.begin(), vec.end(), Int_distance(), Int_average(), 10, 3, StableState, true);
 
 	k_means.DisplayCollection(vec.begin(), vec.end());
 }
@@ -107,7 +109,7 @@ void BitmapScenario(int k, string inputFileName, string outputFileName)
 	}
 
 	// computing
-	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 10, k, Both);
+	result = k_means.Group(vec.begin(), vec.end(), Point2D_distance(), Point2D_average(), 10, k, StableState);
 
 	// coloring
 	for (int i = 0; i < k; i++)

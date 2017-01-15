@@ -36,7 +36,7 @@ class K_means
 		/// Licznik iteracji algorytmu, s³u¿y do sprawdzania warunku stopu.
 		int iterationCounter;
 
-		/// Loczba grup podanych przez u¿ytkownika.
+		/// Liczba grup podanych przez u¿ytkownika.
 		int groupNumber;
 
 		/// Liczba elementów znajduj¹cych siê w zakresie okreœlonym iteratorami pocz¹tku i koñca.
@@ -78,7 +78,7 @@ class K_means
 
 		/// Dyspozytor Iteratora swobodnego dostêpu. Stanowi zabezpiecznie przed u¿yciem funkcji dla innych typów iteratorów.
 		template <typename Iterator, typename DistancePredicate, typename AveragePredicate>
-		Iterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput = false)
+		returnIterator* Group(Iterator first, Iterator last, DistancePredicate &distanceMeasure, AveragePredicate &groupAverage, int maxIteration, int k, StopConditions stopCondition, bool printOutput = false)
 		{
 			typedef typename std::iterator_traits<Iterator>::iterator_category category;
 			return Group(first, last, category(), distanceMeasure, groupAverage, maxIteration, k, stopCondition, printOutput);
@@ -104,9 +104,6 @@ private:
 		{
 			elementCount = distance(first, last);
 			groupNumber = k;
-
-			iterationCounter = 0;
-			stopConditionFulfilled = false;
 
 			Initialize();
 
@@ -224,6 +221,9 @@ private:
 			if (elementCount < groupNumber)
 				throw std::logic_error("Liczba elementów jest mniejsza ni¿ liczba grup");
 
+
+			iterationCounter = 0;
+			stopConditionFulfilled = false;
 			groupMinimum = DBL_MAX;
 			groupStartIndex = 0;
 
